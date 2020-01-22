@@ -1,0 +1,11 @@
+[package]
+name = "gen-chubster-food-db-cnf-2015"
+version = "1.0.0"
+authors = ["Kenton Hamaluik <kenton@hamaluik.ca>"]
+edition = "2018"
+
+[dependencies]
+rusqlite = { version = "0.21", features = ["bundled"] }
+#csv = "1.1"
+calamine = "0.16"
+memmap = "0.7"
