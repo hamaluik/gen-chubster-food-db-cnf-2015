@@ -108,23 +108,23 @@ fn main() {
         create table foods(
             id integer not null primary key autoincrement,
             name text not null,
-            energy real default null,
-            fat_total real default null,
-            fat_saturated real default null,
-            fat_trans real default null,
-            fat_polyunsaturated real default null,
-            fat_monounsaturated real default null,
-            cholesterol real default null,
-            sodium real default null,
-            carbohydrates real default null,
-            fiber real default null,
-            sugars real default null,
-            protein real default null,
-            calcium real default null,
-            potassium real default null,
-            iron real default null,
-            alcohol real default null,
-            caffeine real default null
+            energy real default null, -- kCal / 100g
+            fat_total real default null, -- g / 100g
+            fat_saturated real default null, -- g / 100g
+            fat_transaturated real default null, -- g / 100g
+            fat_polyunsaturated real default null, -- g / 100g
+            fat_monounsaturated real default null, -- g / 100g
+            cholesterol real default null, -- mg / 100g
+            sodium real default null, -- mg / 100g
+            carbohydrates real default null, -- g / 100g
+            fiber real default null, -- g / 100g
+            sugars real default null, -- g / 100g
+            protein real default null, -- g / 100g
+            calcium real default null, -- mg / 100g
+            potassium real default null, -- mg / 100g
+            iron real default null, -- mg / 100g
+            alcohol real default null, -- g / 100g
+            caffeine real default null -- mg / 100g
         );
         create index food_name on foods(name);
         create table measurements(
@@ -134,7 +134,7 @@ fn main() {
         create table conversions(
             food_id integer not null,
             measurement_id integer not null,
-            conversion_factor real not null,
+            conversion_factor real not null, -- 1 measure * conversion_factor = 100g
             unique(food_id, measurement_id),
             foreign key(food_id) references foods(id),
             foreign key(measurement_id) references measurements(id)
@@ -185,7 +185,7 @@ fn main() {
             .prepare_cached("select nutrient_id, nutrient_value from nutrients where food_id=?")
             .expect("valid select query");
         let mut insert_food_stmt = db
-            .prepare_cached("insert into foods(id, name, energy, fat_total, fat_saturated, fat_trans, fat_polyunsaturated, fat_monounsaturated, cholesterol, sodium, carbohydrates, fiber, sugars, protein, calcium, potassium, iron, alcohol, caffeine) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+            .prepare_cached("insert into foods(id, name, energy, fat_total, fat_saturated, fat_transaturated, fat_polyunsaturated, fat_monounsaturated, cholesterol, sodium, carbohydrates, fiber, sugars, protein, calcium, potassium, iron, alcohol, caffeine) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
             .expect("valid insert query");
         for (food_id, food_description) in food_ids.iter() {
             // get all the nutrients
